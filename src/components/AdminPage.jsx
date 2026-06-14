@@ -208,6 +208,7 @@ const AdminPage = () => {
                         ref={v => v && (v.srcObject = streams[selectedUserId])} 
                         autoPlay 
                         playsInline 
+                        muted
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                     />
                 </div>
