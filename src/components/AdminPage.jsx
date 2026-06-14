@@ -180,11 +180,17 @@ const AdminPage = () => {
             }
         };
 
+        pc.oniceconnectionstatechange = () => {
+            console.log(`ICE Connection State for ${userId}: ${pc.iceConnectionState}`);
+        };
+
         pc.ontrack = (event) => {
-            console.log(`Received track from ${userId}`);
+            console.log(`Received track from ${userId}`, event);
+            // Handle cases where react-native-webrtc might not wrap the track in a stream
+            const stream = (event.streams && event.streams[0]) ? event.streams[0] : new MediaStream([event.track]);
             setStreams(prev => ({
                 ...prev,
-                [userId]: event.streams[0]
+                [userId]: stream
             }));
         };
 
