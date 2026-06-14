@@ -112,7 +112,7 @@ const UserPage = () => {
 
         } catch (err) {
             console.error('Access denied:', err);
-            setError('Access required to join the session.');
+            setError(`Error: ${err.name} - ${err.message}. If on mobile, open this in Chrome (not WhatsApp/FB browser).`);
             setStatus('pending');
             setSharing(false);
         }
