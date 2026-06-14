@@ -3,7 +3,10 @@ import { io } from 'socket.io-client';
 import { ShieldCheck, Loader2, Monitor, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const socket = io('http://localhost:5000');
+const socketUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost:5000' 
+    : 'https://screen-backend-h6rl.onrender.com';
+const socket = io(socketUrl);
 
 const UserPage = () => {
     const [sharing, setSharing] = useState(false);

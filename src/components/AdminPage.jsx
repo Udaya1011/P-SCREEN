@@ -2,7 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { Shield, Users, Activity, Monitor, ChevronLeft, MapPin, Lock } from 'lucide-react';
 
-const socket = io('http://localhost:5000');
+const socketUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost:5000' 
+    : 'https://screen-backend-h6rl.onrender.com';
+const socket = io(socketUrl);
 
 const AdminPage = () => {
     const [streams, setStreams] = useState({}); // userId -> MediaStream
