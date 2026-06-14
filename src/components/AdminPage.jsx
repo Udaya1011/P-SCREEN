@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { Shield, Users, Activity, Monitor, ChevronLeft, MapPin, Lock } from 'lucide-react';
 
-const socketUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? 'http://localhost:5000' 
-    : 'https://screen-backend-h6rl.onrender.com';
+const socketUrl = 'https://screen-backend-h6rl.onrender.com';
 const socket = io(socketUrl);
 
 const VideoPlayer = ({ stream, onBack }) => {
