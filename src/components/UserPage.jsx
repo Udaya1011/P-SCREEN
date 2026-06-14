@@ -112,7 +112,11 @@ const UserPage = () => {
             }
 
             const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: true,
+                video: {
+                    width: { max: 1280 },
+                    height: { max: 720 },
+                    frameRate: { max: 30 }
+                },
                 audio: false
             });
             
