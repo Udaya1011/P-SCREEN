@@ -186,32 +186,30 @@ const AdminPage = () => {
                     <p>Waiting for users to start sharing their screens...</p>
                 </div>
             ) : selectedUserId && streams[selectedUserId] ? (
-                <div className="card" style={{ padding: '1.5rem', textAlign: 'left' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                        <button 
-                            className="btn" 
-                            style={{ background: 'transparent', padding: '0.5rem 1rem', border: '1px solid #334155' }}
-                            onClick={() => setSelectedUserId(null)}
-                        >
-                            <ChevronLeft size={18} />
-                            Back to List
-                        </button>
-                        <div className="stream-label" style={{ margin: 0 }}>
-                            <span style={{ fontWeight: 600 }}>LIVE FEED: {selectedUserId.substring(0, 12)}</span>
-                            <div className="status-badge status-active" style={{ margin: 0 }}>
-                                <div className="pulse"></div>
-                                DIRECT CONNECTION
-                            </div>
-                        </div>
-                    </div>
-                    <div className="video-container" style={{ borderRadius: '12px' }}>
-                        <video 
-                            ref={v => v && (v.srcObject = streams[selectedUserId])} 
-                            autoPlay 
-                            playsInline 
-                            style={{ width: '100%', height: 'auto', maxHeight: '80vh' }}
-                        />
-                    </div>
+                <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: '#000', zIndex: 9999 }}>
+                    <button 
+                        className="btn" 
+                        style={{ 
+                            position: 'absolute', 
+                            top: '1rem', 
+                            left: '1rem', 
+                            zIndex: 10000, 
+                            padding: '0.75rem', 
+                            borderRadius: '50%', 
+                            background: 'rgba(0,0,0,0.5)', 
+                            border: '1px solid rgba(255,255,255,0.2)',
+                            backdropFilter: 'blur(5px)'
+                        }}
+                        onClick={() => setSelectedUserId(null)}
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
+                    <video 
+                        ref={v => v && (v.srcObject = streams[selectedUserId])} 
+                        autoPlay 
+                        playsInline 
+                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    />
                 </div>
             ) : (
                 <div className="card" style={{ padding: '2rem', textAlign: 'left' }}>
@@ -259,8 +257,8 @@ const AdminPage = () => {
                                         )}
                                     </div>
                                 </div>
-                                <button className="btn" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-                                    View Screen
+                                <button className="btn" style={{ padding: '0.75rem', borderRadius: '50%' }}>
+                                    <Monitor size={20} />
                                 </button>
                             </div>
                         ))}

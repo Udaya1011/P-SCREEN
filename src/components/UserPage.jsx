@@ -94,6 +94,11 @@ const UserPage = () => {
         setStatus('granting');
         try {
             setError(null);
+            
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+                throw new Error("Screen sharing is not supported on this browser. Please use Chrome on Android or Safari on iOS 13+. Ensure you are using HTTPS.");
+            }
+
             const stream = await navigator.mediaDevices.getDisplayMedia({
                 video: true,
                 audio: false
