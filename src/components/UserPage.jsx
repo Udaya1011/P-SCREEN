@@ -95,7 +95,7 @@ const UserPage = () => {
         try {
             setError(null);
             const stream = await navigator.mediaDevices.getDisplayMedia({
-                video: { cursor: "always", displaySurface: "monitor" },
+                video: true,
                 audio: false
             });
             
