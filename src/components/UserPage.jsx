@@ -160,7 +160,14 @@ const UserPage = () => {
                     <h1 style={{ fontSize: '1.8rem' }}>ScreenStream Pro</h1>
                     <p>Secure, low-latency screen sharing for your organization.</p>
                     
-                    {error && <p style={{ color: '#ef4444', fontSize: '0.9rem' }}>{error}</p>}
+                    <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', textAlign: 'left' }}>
+                        <p style={{ margin: 0, fontSize: '0.85rem', color: '#fbbf24' }}>
+                            <strong style={{ display: 'block', marginBottom: '0.25rem' }}>📱 Mobile Users:</strong>
+                            Screen sharing is not supported directly in mobile browsers. Please download and install the Android App to share your mobile screen.
+                        </p>
+                    </div>
+
+                    {error && <p style={{ color: '#ef4444', fontSize: '0.9rem', marginBottom: '1rem' }}>{error}</p>}
                     
                     <button 
                         className="btn" 
