@@ -184,12 +184,23 @@ const AdminPage = () => {
 
         pc.ontrack = (event) => {
             console.log(`Received track from ${userId}`, event);
-            // Handle cases where react-native-webrtc might not wrap the track in a stream
-            const stream = (event.streams && event.streams[0]) ? event.streams[0] : new MediaStream([event.track]);
-            setStreams(prev => ({
-                ...prev,
-                [userId]: stream
-            }));
+            
+            setStreams(prev => {
+                const existingStream = prev[userId];
+                if (existingStream) {
+                    // Add track to existing stream if not already added
+                    if (!existingStream.getTracks().find(t => t.id === event.track.id)) {
+                        existingStream.addTrack(event.track);
+                    }
+                    return prev; // Do not return a new object to avoid re-rendering
+                } else {
+                    const newStream = (event.streams && event.streams[0]) ? event.streams[0] : new MediaStream([event.track]);
+                    return {
+                        ...prev,
+                        [userId]: newStream
+                    };
+                }
+            });
         };
 
         peerConnections.current[userId] = pc;
