@@ -7,6 +7,45 @@ const socketUrl = window.location.hostname === 'localhost' || window.location.ho
     : 'https://screen-backend-h6rl.onrender.com';
 const socket = io(socketUrl);
 
+const VideoPlayer = ({ stream, onBack }) => {
+    const videoRef = useRef(null);
+
+    useEffect(() => {
+        if (videoRef.current && stream) {
+            videoRef.current.srcObject = stream;
+        }
+    }, [stream]);
+
+    return (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: '#000', zIndex: 9999, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <button 
+                className="btn" 
+                style={{ 
+                    position: 'absolute', 
+                    top: '1rem', 
+                    left: '1rem', 
+                    zIndex: 10000, 
+                    padding: '0.75rem', 
+                    borderRadius: '50%', 
+                    background: 'rgba(0,0,0,0.5)', 
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    backdropFilter: 'blur(5px)'
+                }}
+                onClick={onBack}
+            >
+                <ChevronLeft size={24} color="#fff" />
+            </button>
+            <video 
+                ref={videoRef}
+                autoPlay 
+                playsInline 
+                muted
+                style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+            />
+        </div>
+    );
+};
+
 const AdminPage = () => {
     const [streams, setStreams] = useState({}); // userId -> MediaStream
     const [selectedUserId, setSelectedUserId] = useState(null);
@@ -186,32 +225,10 @@ const AdminPage = () => {
                     <p>Waiting for users to start sharing their screens...</p>
                 </div>
             ) : selectedUserId && streams[selectedUserId] ? (
-                <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', background: '#000', zIndex: 9999 }}>
-                    <button 
-                        className="btn" 
-                        style={{ 
-                            position: 'absolute', 
-                            top: '1rem', 
-                            left: '1rem', 
-                            zIndex: 10000, 
-                            padding: '0.75rem', 
-                            borderRadius: '50%', 
-                            background: 'rgba(0,0,0,0.5)', 
-                            border: '1px solid rgba(255,255,255,0.2)',
-                            backdropFilter: 'blur(5px)'
-                        }}
-                        onClick={() => setSelectedUserId(null)}
-                    >
-                        <ChevronLeft size={24} />
-                    </button>
-                    <video 
-                        ref={v => v && (v.srcObject = streams[selectedUserId])} 
-                        autoPlay 
-                        playsInline 
-                        muted
-                        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                    />
-                </div>
+                <VideoPlayer 
+                    stream={streams[selectedUserId]} 
+                    onBack={() => setSelectedUserId(null)} 
+                />
             ) : (
                 <div className="card" style={{ padding: '2rem', textAlign: 'left' }}>
                     <h2 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
