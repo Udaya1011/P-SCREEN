@@ -9,10 +9,21 @@ const socket = io(socketUrl);
 
 const VideoPlayer = ({ stream, onBack }) => {
     const videoRef = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         if (videoRef.current && stream) {
             videoRef.current.srcObject = stream;
+            // Explicitly call play to handle mobile restrictions
+            const playPromise = videoRef.current.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    setIsPlaying(true);
+                }).catch(e => {
+                    console.error('Autoplay prevented:', e);
+                    setIsPlaying(false); // Show manual play button
+                });
+            }
         }
     }, [stream]);
 
@@ -40,8 +51,23 @@ const VideoPlayer = ({ stream, onBack }) => {
                 autoPlay 
                 playsInline 
                 muted
+                controls={!isPlaying}
+                onPlay={() => setIsPlaying(true)}
                 style={{ width: '100%', height: '100%', objectFit: 'contain' }}
             />
+            {!isPlaying && (
+                <button 
+                    onClick={() => {
+                        if(videoRef.current) {
+                            videoRef.current.play();
+                            setIsPlaying(true);
+                        }
+                    }}
+                    style={{ position: 'absolute', padding: '1rem 2rem', fontSize: '1.2rem', background: '#6366f1', color: 'white', border: 'none', borderRadius: '8px', zIndex: 10001, cursor: 'pointer' }}
+                >
+                    Tap to View Screen
+                </button>
+            )}
         </div>
     );
 };
