@@ -12,16 +12,19 @@ const VideoPlayer = ({ stream, onBack }) => {
     useEffect(() => {
         if (videoRef.current && stream) {
             videoRef.current.srcObject = stream;
-            // Explicitly call play to handle mobile restrictions
-            const playPromise = videoRef.current.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    setIsPlaying(true);
-                }).catch(e => {
-                    console.error('Autoplay prevented:', e);
-                    setIsPlaying(false); // Show manual play button
-                });
-            }
+            
+            // Wait for metadata to load before playing to prevent AbortError and blank screens
+            videoRef.current.onloadedmetadata = () => {
+                const playPromise = videoRef.current.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        setIsPlaying(true);
+                    }).catch(e => {
+                        console.error('Autoplay prevented:', e);
+                        setIsPlaying(false);
+                    });
+                }
+            };
         }
     }, [stream]);
 
